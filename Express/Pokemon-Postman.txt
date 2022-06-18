@@ -1,0 +1,5 @@
+1. GET https://pokeapi.co/api/v2/pokemon/20
+2. GET https://pokeapi.co/api/v2/pokemon/12
+3. GET https://pokeapi.co/api/v2/pokemon/clefairy
+4. GET https://pokeapi.co/api/v2/pokemon/9
+5. GET https://pokeapi.co/api/v2/pokemon/6
