@@ -29,3 +29,9 @@ module.exports.updateProduct = (request, response) => {
         .catch(err => response.json(err))
 }
 
+module.exports.deleteProduct = (request, response) => {
+    Product.deleteOne({ _id: request.params.id })
+        .then(deleteConfirmation => response.json(deleteConfirmation))
+        .catch(err => response.json(err))
+}
+

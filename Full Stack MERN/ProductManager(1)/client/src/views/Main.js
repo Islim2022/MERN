@@ -13,11 +13,15 @@ export default () => {
             .catch(err => console.error(err));
     }, [products]);
 
+    const removeFromDom = productId => {
+        setProducts(products.filter(product => product._id != productId));
+    }
+
     return (
         <div>
             <ProductForm />
             <hr />
-            <ProductList product={products} />
+            <ProductList product={products} removeFromDom={removeFromDom} />
         </div>
     )
 }
