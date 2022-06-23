@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 export default props => {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [price, setPrice] = useState("");
+    const { initialTitle, initialDescription, initialPrice, onSubmitProp } = props;
+    const [title, setTitle] = useState(initialTitle);
+    const [description, setDescription] = useState(initialDescription);
+    const [price, setPrice] = useState(initialPrice);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -12,13 +13,12 @@ export default props => {
         if (title.length & description.length & price.length === 0) {
             return;
         }
-        axios.post('http://localhost:8000/api/product', {
+
+        onSubmitProp({
             title,
             description,
             price
-        })
-        .then(res => console.log("Response: ", res))
-        .catch(err => console.log("Error: ", err))
+        });
 
         setTitle("");
         setDescription("");
@@ -33,7 +33,8 @@ export default props => {
         <form onSubmit={handleSubmit}>
             <p>
                 <label>Title</label>
-                <input type="text" 
+                <input type="text"
+                name="title" 
                 value={title} 
                 onChange={(e) => setTitle(e.target.value)}
                 className={input.join(" ")} 
@@ -42,6 +43,7 @@ export default props => {
             <p>
                 <label>Description</label>
                 <input type="text" 
+                name="description"
                 value={description} 
                 onChange={(e) => setDescription(e.target.value)}
                 className={input.join(" ")} 
@@ -50,6 +52,7 @@ export default props => {
             <p>
                 <label>Price</label>
                 <input type="text" 
+                name="price"
                 value={price} 
                 onChange={(e) => setPrice(e.target.value)}
                 className={input.join(" ")} 

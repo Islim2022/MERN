@@ -1,69 +1,48 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
+import ProductForm from '../components/ProductForm';
+import DeleteButton from '../components/DeleteButton';
     
 const Update = (props) => {
+    const history = useHistory()
     const { id } = useParams();
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [price, setPrice] = useState('');
+    const [product, setProduct] = useState();
+    const [loaded, setLoaded] = useState(false);
     
     useEffect(() => {
         axios.get('http://localhost:8000/api/product/' + id)
-            .then(res => {
-                setTitle(res.data.title);
-                setDescription(res.data.description);
-                setPrice(res.data.price);
+            .then(response => {
+                setProduct(response.data);
+                setLoaded(true);
             })
     }, []);
-    
-    const handleupdateProduct = e => {
-        e.preventDefault();
-        axios.put('http://localhost:8000/api/product/' + id, {
-            title,
-            description,
-            price
-        })
-            .then(res => console.log(res))
-            .catch(err => console.error(err));
+
+    const updateProduct = product => {
+        axios.put('http://localhost:8000/api/product/' + id, product)
+            .then(response => console.log(response))
     }
 
-    const button = ["button"];
-    const input = ["input"];
+    // const button = ["button"];
+    // const input = ["input"];
     
     return (
         <div>
             <h1>Update a Product</h1>
-            <form onSubmit={handleupdateProduct}>
-                <p>
-                    <label>Title</label>
-                    <input type="text"
-                    name="title" 
-                    value={title} 
-                    onChange={(e) => setTitle(e.target.value)}
-                    className={input.join(" ")} 
-                    />
-                </p>
-                <p>
-                    <label>Description</label>
-                    <input type="text"
-                    name="description" 
-                    value={description} 
-                    onChange={(e) => setDescription(e.target.value)}
-                    className={input.join(" ")} 
-                    />
-                </p>
-                <p>
-                    <label>Price</label>
-                    <input type="text"
-                    name="price" 
-                    value={price} 
-                    onChange={(e) => setPrice(e.target.value)}
-                    className={input.join(" ")} 
-                    />
-                </p>
-                <button className={button.join(" ")}>Create</button>
-            </form>
+            {loaded && (
+                <>
+                <ProductForm>
+                    onSubmitProp={updateProduct}
+                    initialTitle={product.title}
+                    initialDescription={product.description}
+                    initialPrice={product.price}
+                </ProductForm>
+                <DeleteButton 
+                    productId={product._id} 
+                    successCallback={() => history.push("/")}
+                />
+                </>
+            )}
         </div>
     )
 }
