@@ -42,7 +42,7 @@ const AuthorForm = (props) => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className={input.join(" ")} />
-                {errors.map((error, index) => <p className="text-danger">{error}</p>)}
+                {errors.map((error, index) => <p key={index} className="text-danger">{error}</p>)}
                 <button
                 className={button.join(" ")}>
                     Submit
